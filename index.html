@@ -31,6 +31,7 @@
             position: absolute;
             top: 0;
             left: 0;
+          
         }
         .hidden { display: none !important; }
 
@@ -182,14 +183,22 @@
     position: absolute;
     top: 0;
     left: 0;
+    box-sizing: border-box;
 }
-
+/* Jab screen hidden ho toh bilkul gayab ho jaye */
+.hidden { display: none !important; }
 /* Sirf last screen (Photos wali) ko scroll hone ki ijazat dein */
 #screen4 {
-    overflow-y: auto; /* Is se vertical scrollbar aa jayega */
-    display: block;   /* Mobile par images ko sequence mein lane ke liye */
-    padding-top: 50px;
-    padding-bottom: 50px;
+   position: relative !important; /* Absolute hata kar relative kiya taake page azaad ho sky */
+    height: auto !important;       /* 100vh ki qaid khatam, ab jitni pics hon gi utna page lamba hoga */
+    min-height: 100vh;
+    overflow-y: visible !important; /* Scroll lock ko bilkul khatam karne ke liye */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;  /* Content top se start ho kar neeche jaye */
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 60px;
 }
 
 .gallery {
@@ -197,6 +206,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin-top: 20px;
 }
          /* ----- new end  ----- */
         /* ----- ALL ANIMATIONS ----- */
@@ -366,10 +376,13 @@
         }
 
         // Final Phase (Show Photo Gallery)
-        document.getElementById('surpriseBtn').addEventListener('click', () => {
-            document.getElementById('screen3').classList.add('hidden');
-            document.getElementById('screen4').classList.remove('hidden');
-        });
+       document.getElementById('surpriseBtn').addEventListener('click', () => {
+    document.getElementById('screen3').classList.add('hidden');
+    document.getElementById('screen4').classList.remove('hidden');
+    
+    // Page ko auto top par le jaye taake baqi pics neeche scroll hon
+    window.scrollTo(0, 0); 
+});
     </script>
 </body>
 </html>
