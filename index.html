@@ -12,7 +12,7 @@
             color: white; 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             text-align: center; 
-            overflow: hidden;
+            overflow-x: hidden;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -161,14 +161,44 @@
         button:hover { background: #ff6b81; }
 
         .gallery img {
-            width: 85%;
-            max-width: 300px;
-            margin: 10px;
-            border-radius: 10px;
-            border: 5px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+          width: 90%;          /* Mobile screen ke hisab se khud fit ho jaye */
+    max-width: 320px;    /* Bohat zyada bari bhi na ho */
+    height: auto;
+    margin: 15px 0;
+    border: 5px solid white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
+/* Purani screen property ko change karein taake content cut na ho 
+        add new cut this if u face any error*/
+.screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh; /* height ki jagah min-height karein taake content lamba ho sake */
+    padding: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
 
+/* Sirf last screen (Photos wali) ko scroll hone ki ijazat dein */
+#screen4 {
+    overflow-y: auto; /* Is se vertical scrollbar aa jayega */
+    display: block;   /* Mobile par images ko sequence mein lane ke liye */
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+         /* ----- new end  ----- */
         /* ----- ALL ANIMATIONS ----- */
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
