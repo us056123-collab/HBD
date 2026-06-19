@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Dad!</title>
+    <style>
+        /* Add your CSS styling here */
+        body { background: #1a1a1a; color: white; font-family: Arial, sans-serif; text-align: center; overflow: hidden; }
+        .hidden { display: none; }
+        .candle { width: 10px; height: 40px; background: yellow; display: inline-block; margin: 5px; position: relative; }
+        .flame { width: 14px; height: 20px; background: orange; position: absolute; top: -20px; left: -2px; border-radius: 50% 50% 20% 20%; }
+        /* Add balloon animations here */
+    </style>
+</head>
+<body>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" src="birthday_music.mp3" loop></audio>
+
+    <!-- Step 1: Gift Box -->
+    <div id="screen1">
+        <h2>You have a package! 🎁</h2>
+        <button id="giftBox" style="font-size: 50px; background: none; border: none; cursor: pointer;">🎁</button>
+    </div>
+
+    <!-- Step 2: Cake & Countdown -->
+    <div id="screen2" class="hidden">
+        <h1 id="countdown">3</h1>
+        <div id="cake">
+            🎂
+            <div id="candles">
+                <div class="candle"><div class="flame"></div></div>
+                <div class="candle"><div class="flame"></div></div>
+                <div class="candle"><div class="flame"></div></div>
+                <div class="candle"><div class="flame"></div></div>
+                <div class="candle"><div class="flame"></div></div>
+            </div>
+        </div>
+        <p id="instruction" class="hidden">💨 Bring the phone closer and BLOW hard into the mic!</p>
+    </div>
+
+    <!-- Step 3: Letter -->
+    <div id="screen3" class="hidden">
+        <div class="letter">
+            <h2>Happy Birthday, Dearest Dad! ❤️</h2>
+            <p>Even though you are far away, you are always in my heart...</p>
+            <button id="surpriseBtn">Tap on it for one more surprise</button>
+        </div>
+    </div>
+
+    <!-- Step 4: Photos -->
+    <div id="screen4" class="hidden">
+        <h2>Memories with You 📸</h2>
+        <img src="photo1.jpg" width="200" alt="Dad">
+        <img src="photo2.jpg" width="200" alt="Family">
+    </div>
+
+    <script>
+        const music = document.getElementById('bgMusic');
+        
+        // Phase 1 to Phase 2
+        document.getElementById('giftBox').addEventListener('click', () => {
+            music.play().catch(e => console.log("Audio play blocked until interaction"));
+            document.getElementById('screen1').classList.add('hidden');
+            document.getElementById('screen2').classList.remove('hidden');
+            startCountdown();
+        });
+
+        // Countdown Logic
+        function startCountdown() {
+            let count = 3;
+            const interval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    document.getElementById('countdown').innerText = count;
+                } else {
+                    clearInterval(interval);
+                    document.getElementById('countdown').classList.add('hidden');
+                    document.getElementById('instruction').classList.remove('hidden');
+                    startMicDetection();
+                }
+            }, 1000);
+        }
+
+        // Microphone Detection Logic
+        function startMicDetection() {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(stream => {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const analyser = audioContext.createAnalyser();
+                const microphone = audioContext.createMediaStreamSource(stream);
+                microphone.connect(analyser);
+                analyser.fftSize = 256;
+                const bufferLength = analyser.frequencyBinCount;
+                const dataArray = new Uint8Array(bufferLength);
+
+                function checkBlow() {
+                    analyser.getByteFrequencyData(dataArray);
+                    let sum = 0;
+                    for (let i = 0; i < bufferLength; i++) {
+                        sum += dataArray[i];
+                    }
+                    let average = sum / bufferLength;
+
+                    // Threshold for blowing sound
+                    if (average > 60) { 
+                        // Blow detected! Extinguish candles
+                        document.querySelectorAll('.flame').forEach(f => f.style.display = 'none');
+                        setTimeout(() => {
+                            document.getElementById('screen2').classList.add('hidden');
+                            document.getElementById('screen3').classList.remove('hidden');
+                        }, 1500);
+                        stream.getTracks().forEach(track => track.stop()); // Turn off mic
+                    } else {
+                        requestAnimationFrame(checkBlow);
+                    }
+                }
+                checkBlow();
+            })
+            .catch(err => {
+                console.log("Mic access denied, adding backup click option", err);
+                // Fallback: click cake if mic permission is denied
+                document.getElementById('cake').addEventListener('click', () => {
+                    document.querySelectorAll('.flame').forEach(f => f.style.display = 'none');
+                    document.getElementById('screen2').classList.add('hidden');
+                    document.getElementById('screen3').classList.remove('hidden');
+                });
+            });
+        }
+
+        // Final Phase
+        document.getElementById('surpriseBtn').addEventListener('click', () => {
+            document.getElementById('screen3').classList.add('hidden');
+            document.getElementById('screen4').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
