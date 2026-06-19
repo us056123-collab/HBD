@@ -3,69 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Dad!</title>
+    <title>Happy Birthday Dad! ❤️</title>
     <style>
-        /* Add your CSS styling here */
-        body { background: #1a1a1a; color: white; font-family: Arial, sans-serif; text-align: center; overflow: hidden; }
-        .hidden { display: none; }
-        .candle { width: 10px; height: 40px; background: yellow; display: inline-block; margin: 5px; position: relative; }
-        .flame { width: 14px; height: 20px; background: orange; position: absolute; top: -20px; left: -2px; border-radius: 50% 50% 20% 20%; }
-        /* Add balloon animations here */
+        /* Global & Reset Styles */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            background: #121212; 
+            color: white; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            text-align: center; 
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Screen Wrapper Layouts */
+        .screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100vh;
+            padding: 20px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .hidden { display: none !important; }
+
+        /* Screen 1: Gift Box Styling */
+        #giftBox {
+            font-size: 100px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s ease;
+            animation: bounce 2s infinite;
+        }
+        #giftBox:hover { transform: scale(1.15); }
+
+        /* Screen 2: Countdown & Instruction Layout */
+        #countdown {
+            font-size: 5rem;
+            font-weight: bold;
+            color: #ff4757;
+            margin-bottom: 20px;
+        }
+        #instruction {
+            font-size: 1.5rem;
+            color: #f1c40f;
+            margin-top: 30px;
+            font-weight: bold;
+            max-width: 500px;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* ----- THE NEW LAYERED CAKE DESIGN ----- */
+        .cake-container {
+            position: relative;
+            width: 250px;
+            margin-top: 60px; /* Leave space for candles on top */
+        }
+        .cake-layer {
+            border-radius: 10px 10px 0 0;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .layer-top {
+            width: 160px;
+            height: 50px;
+            background: #ff7495; /* Pink Frosting */
+            border-bottom: 6px solid #f3a683;
+        }
+        .layer-bottom {
+            width: 220px;
+            height: 70px;
+            background: #6d4c41; /* Chocolate Base */
+            border-bottom: 8px solid #ff7495;
+        }
+        /* Cake decorations */
+        .layer-top::before {
+            content: "🍒 🍒 🍒 🍒";
+            position: absolute;
+            top: -5px;
+            left: 15px;
+            font-size: 16px;
+        }
+
+        /* ----- CANDLES ON TOP ----- */
+        .candles-row {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            z-index: 10;
+        }
+        .candle {
+            width: 12px;
+            height: 45px;
+            background: linear-gradient(to right, #eccc68, #ffa502);
+            position: relative;
+            border-radius: 3px 3px 0 0;
+        }
+        .flame {
+            width: 14px;
+            height: 22px;
+            background: radial-gradient(circle, #fffa65 20%, #ff4757 100%);
+            position: absolute;
+            top: -24px;
+            left: -1px;
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 15px #ffa502;
+            animation: flicker 0.1s ease-in-out infinite alternate;
+        }
+
+        /* ----- BALLOONS & BALLS POP PARTICLES ----- */
+        .particle {
+            position: fixed;
+            font-size: 30px;
+            pointer-events: none;
+            z-index: 999;
+            animation: floatUp 2.5s ease-out forwards;
+        }
+
+        /* ----- SCREEN 3 & 4 STYLING ----- */
+        .letter {
+            background: #fff;
+            color: #2c3e50;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            max-width: 500px;
+            width: 90%;
+        }
+        .letter h2 { color: #e74c3c; margin-bottom: 15px; }
+        .letter p { font-size: 1.1rem; line-height: 1.6; margin-bottom: 20px; }
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        button:hover { background: #ff6b81; }
+
+        .gallery img {
+            width: 85%;
+            max-width: 300px;
+            margin: 10px;
+            border-radius: 10px;
+            border: 5px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* ----- ALL ANIMATIONS ----- */
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+        @keyframes flicker {
+            0% { transform: scale(1); opacity: 0.9; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; transform: scale(1.02); }
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) translateX(0) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-15vh) translateX(var(--x-move)) scale(1.2); opacity: 0; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Background Music -->
     <audio id="bgMusic" src="birthday_music.mp3" loop></audio>
 
-    <!-- Step 1: Gift Box -->
-    <div id="screen1">
-        <h2>You have a package! 🎁</h2>
-        <button id="giftBox" style="font-size: 50px; background: none; border: none; cursor: pointer;">🎁</button>
+    <div id="screen1" class="screen">
+        <h2>You have a package, Dad! 🎁</h2>
+        <button id="giftBox">🎁</button>
     </div>
 
-    <!-- Step 2: Cake & Countdown -->
-    <div id="screen2" class="hidden">
+    <div id="screen2" class="screen hidden">
         <h1 id="countdown">3</h1>
-        <div id="cake">
-            🎂
-            <div id="candles">
+        
+        <div class="cake-container">
+            <div class="candles-row">
                 <div class="candle"><div class="flame"></div></div>
                 <div class="candle"><div class="flame"></div></div>
                 <div class="candle"><div class="flame"></div></div>
                 <div class="candle"><div class="flame"></div></div>
                 <div class="candle"><div class="flame"></div></div>
             </div>
+            <div class="cake-layer layer-top"></div>
+            <div class="cake-layer layer-bottom"></div>
         </div>
+
         <p id="instruction" class="hidden">💨 Bring the phone closer and BLOW hard into the mic!</p>
     </div>
 
-    <!-- Step 3: Letter -->
-    <div id="screen3" class="hidden">
+    <div id="screen3" class="screen hidden">
         <div class="letter">
             <h2>Happy Birthday, Dearest Dad! ❤️</h2>
-            <p>Even though you are far away, you are always in my heart...</p>
+            <p>Even though you are far away, you are always in my heart. Wishing you a year full of love, happiness, and good health!</p>
             <button id="surpriseBtn">Tap on it for one more surprise</button>
         </div>
     </div>
 
-    <!-- Step 4: Photos -->
-    <div id="screen4" class="hidden">
-        <h2>Memories with You 📸</h2>
-        <img src="photo1.jpg" width="200" alt="Dad">
-        <img src="photo2.jpg" width="200" alt="Family">
+    <div id="screen4" class="screen hidden">
+        <h2 style="margin-bottom: 20px;">Memories with You 📸</h2>
+        <div class="gallery">
+            <img src="photo1.jpg" alt="Dad Memory 1">
+            <img src="photo2.jpg" alt="Dad Memory 2">
+        </div>
     </div>
 
     <script>
         const music = document.getElementById('bgMusic');
         
-        // Phase 1 to Phase 2
+        // Phase 1 to Phase 2 (Click Gift Box)
         document.getElementById('giftBox').addEventListener('click', () => {
             music.play().catch(e => console.log("Audio play blocked until interaction"));
+            
+            // Spawn Balloon & Ball Particles
+            createPopParticles();
+
+            // Transition screens smoothly
             document.getElementById('screen1').classList.add('hidden');
             document.getElementById('screen2').classList.remove('hidden');
             startCountdown();
         });
+
+        // Function to dynamically generate balloons and balls pop animations
+        function createPopParticles() {
+            const items = ['🎈', '🎈', '🔴', '🔵', '🟢', '🟡', '✨', '🎉'];
+            for (let i = 0; i < 40; i++) {
+                const p = document.createElement('div');
+                p.classList.add('particle');
+                p.innerText = items[Math.floor(Math.random() * items.length)];
+                
+                // Set random paths for particles spread across screen width
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.setProperty('--x-move', (Math.random() * 200 - 100) + 'px');
+                p.style.animationDelay = (Math.random() * 0.5) + 's';
+                
+                document.body.appendChild(p);
+                
+                // Clear DOM after animation ends
+                setTimeout(() => p.remove(), 3000);
+            }
+        }
 
         // Countdown Logic
         function startCountdown() {
@@ -103,14 +304,9 @@
                     }
                     let average = sum / bufferLength;
 
-                    // Threshold for blowing sound
-                    if (average > 60) { 
-                        // Blow detected! Extinguish candles
-                        document.querySelectorAll('.flame').forEach(f => f.style.display = 'none');
-                        setTimeout(() => {
-                            document.getElementById('screen2').classList.add('hidden');
-                            document.getElementById('screen3').classList.remove('hidden');
-                        }, 1500);
+                    // Blow sensitivity threshold
+                    if (average > 55) { 
+                        extinguishCandles();
                         stream.getTracks().forEach(track => track.stop()); // Turn off mic
                     } else {
                         requestAnimationFrame(checkBlow);
@@ -119,17 +315,21 @@
                 checkBlow();
             })
             .catch(err => {
-                console.log("Mic access denied, adding backup click option", err);
-                // Fallback: click cake if mic permission is denied
-                document.getElementById('cake').addEventListener('click', () => {
-                    document.querySelectorAll('.flame').forEach(f => f.style.display = 'none');
-                    document.getElementById('screen2').classList.add('hidden');
-                    document.getElementById('screen3').classList.remove('hidden');
-                });
+                console.log("Mic access denied, adding backup tap feature", err);
+                // Fallback: If microphone breaks or gets blocked, Dad can tap the cake to blow it out
+                document.querySelector('.cake-container').addEventListener('click', extinguishCandles);
             });
         }
 
-        // Final Phase
+        function extinguishCandles() {
+            document.querySelectorAll('.flame').forEach(f => f.style.display = 'none');
+            setTimeout(() => {
+                document.getElementById('screen2').classList.add('hidden');
+                document.getElementById('screen3').classList.remove('hidden');
+            }, 1500);
+        }
+
+        // Final Phase (Show Photo Gallery)
         document.getElementById('surpriseBtn').addEventListener('click', () => {
             document.getElementById('screen3').classList.add('hidden');
             document.getElementById('screen4').classList.remove('hidden');
